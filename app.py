@@ -1,4 +1,5 @@
 import os
+import re
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
@@ -6,7 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///shopping.db')
+
+db_url = os.environ.get('DATABASE_URL', 'sqlite:///shopping.db')
+db_url = re.sub(r'^postgres://', 'postgresql://', db_url)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
