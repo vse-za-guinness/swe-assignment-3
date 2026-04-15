@@ -9,7 +9,8 @@ load_dotenv()
 app = Flask(__name__)
 
 db_url = os.environ.get('DATABASE_URL', 'sqlite:///shopping.db')
-db_url = re.sub(r'^postgres://', 'postgresql://', db_url)
+
+db_url = re.sub(r'^postgres(ql)?://', 'postgresql+psycopg://', db_url)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
